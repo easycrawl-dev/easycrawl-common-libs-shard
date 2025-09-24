@@ -13,7 +13,7 @@ export type PackageInfo = {
   priorityQueueDays?: number;
 }
 
-const packageType = z.object({
+export const packageType = z.object({
   id: z.string().uuid(),
   userId: z.string(),
   invoiceId: z.string(),
