@@ -36,7 +36,7 @@ export const toTaskRecordSnakeCase = (task: TaskRecord): TaskRecordSnakeCase => 
   return toSnakeCaseKeys(task);
 }
 
-export const fromTaskRecordSnakeCase = (task: TaskRecordSnakeCase): TaskRecord => {
+export const toTaskRecordCamelCase = (task: TaskRecordSnakeCase): TaskRecord => {
   return toCamelCaseKeys(task);
 };
 

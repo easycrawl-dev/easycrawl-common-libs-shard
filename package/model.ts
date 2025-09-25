@@ -52,6 +52,6 @@ export const toPackageSnakeCase = (pkg: Package): PackageSnakeCase => {
   return toSnakeCaseKeys(pkg);
 }
 
-export const tomPackageCamelCase = (pkg: PackageSnakeCase): Package => {
+export const toPackageCamelCase = (pkg: PackageSnakeCase): Package => {
   return toCamelCaseKeys(pkg);
 }

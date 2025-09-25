@@ -36,6 +36,6 @@ export const toCreditTransactionSnakeCase = (transaction: CreditTransaction): Cr
   return toSnakeCaseKeys(transaction);
 }
 
-export const fromCreditTransactionSnakeCase = (transaction: CreditTransactionSnakeCase): CreditTransaction => {
+export const toCreditTransactionCamelCase = (transaction: CreditTransactionSnakeCase): CreditTransaction => {
   return toCamelCaseKeys(transaction);
 };

@@ -51,6 +51,6 @@ export const toInvoiceSnakeCase = (invoice: Invoice): InvoiceSnakeCase => {
   return toSnakeCaseKeys(invoice);
 }
 
-export const fromInvoiceSnakeCase = (invoice: InvoiceSnakeCase): Invoice => {
+export const toInvoiceCamelCase = (invoice: InvoiceSnakeCase): Invoice => {
   return toCamelCaseKeys(invoice);
 };
