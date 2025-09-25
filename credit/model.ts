@@ -14,6 +14,7 @@ import { CreditTransactionActionEnum } from "./enum";
 export const creditTransactionType = z.object({
   id: z.string().uuid(),
   userId: z.string(),
+  packageId: z.string().optional().nullable(),
   taskId: z.string(),
   action: z.enum([CreditTransactionActionEnum.ADD, CreditTransactionActionEnum.DEDUCT]),
   amount: z.number().int(),
