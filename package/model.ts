@@ -1,4 +1,10 @@
 import { z } from "zod";
+import {
+  ConvertKeysToSnakeCase,
+  toSnakeCaseKeys,
+  toCamelCaseKeys
+} from "../transform";
+import { snakeCase } from "change-case"
 
 /**
  * Model representing a package in the system.
@@ -32,4 +38,20 @@ export const packageType = z.object({
   expiredAt: z.date().optional().nullable(),
 });
 
+export const packageTypeSnakeCase = z.object(
+  packageType.shape && Object.fromEntries(
+    Object.entries(packageType.shape).map(([key, value]) => [snakeCase(key), value])
+  )
+);
+
 export type Package = z.infer<typeof packageType>;
+
+export type PackageSnakeCase = ConvertKeysToSnakeCase<Package>;
+
+export const toPackageSnakeCase = (pkg: Package): PackageSnakeCase => {
+  return toSnakeCaseKeys(pkg);
+}
+
+export const fromPackageSnakeCase = (pkg: PackageSnakeCase): Package => {
+  return toCamelCaseKeys(pkg);
+};
