@@ -1,4 +1,10 @@
 import { z } from "zod";
+import {
+  ConvertKeysToSnakeCase,
+  toSnakeCaseKeys,
+  toCamelCaseKeys
+} from "../transform";
+import { snakeCase } from "change-case"
 
 /**
  * Model representing an invoice in the system.
@@ -31,4 +37,20 @@ export const invoiceType = z.object({
   updatedAt: z.date().default(() => new Date()),
 });
 
+export const invoiceTypeSnakeCase = z.object(
+  invoiceType.shape && Object.fromEntries(
+    Object.entries(invoiceType.shape).map(([key, value]) => [snakeCase(key), value])
+  )
+);
+
 export type Invoice = z.infer<typeof invoiceType>;
+
+export type InvoiceSnakeCase = ConvertKeysToSnakeCase<Invoice>;
+
+export const toInvoiceSnakeCase = (invoice: Invoice): InvoiceSnakeCase => {
+  return toSnakeCaseKeys(invoice);
+}
+
+export const fromInvoiceSnakeCase = (invoice: InvoiceSnakeCase): Invoice => {
+  return toCamelCaseKeys(invoice);
+};
