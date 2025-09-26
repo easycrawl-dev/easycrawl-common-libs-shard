@@ -15,7 +15,7 @@ import { crawlResultType } from "../crawl";
 export const taskType = z.object({
   id: z.string().uuid().optional(),
   urls: z.string().array().min(1),
-  status: z.enum([TaskStatusEnum.PENDING, TaskStatusEnum.PROGRESS, TaskStatusEnum.COMPLETED, TaskStatusEnum.FAILED]).default(TaskStatusEnum.PENDING),
+  status: z.enum([TaskStatusEnum.PENDING, TaskStatusEnum.PROCESSING, TaskStatusEnum.COMPLETED, TaskStatusEnum.FAILED]).default(TaskStatusEnum.PENDING),
   results: z.array(crawlResultType).default([]),
   createdAt: z.date().default(() => new Date()),
   updatedAt: z.date().default(() => new Date()),
@@ -49,7 +49,7 @@ export const taskRecordType = z.object({
   id: z.string().uuid(),
   userId: z.string(),
   urls: z.string().array(),
-  status: z.enum([TaskStatusEnum.PENDING, TaskStatusEnum.PROGRESS, TaskStatusEnum.COMPLETED, TaskStatusEnum.FAILED]).default(TaskStatusEnum.PENDING),
+  status: z.enum([TaskStatusEnum.PENDING, TaskStatusEnum.PROCESSING, TaskStatusEnum.COMPLETED, TaskStatusEnum.FAILED]).default(TaskStatusEnum.PENDING),
   createdAt: z.date().default(() => new Date()),
   updatedAt: z.date().default(() => new Date()),
   completedAt: z.date().optional().nullable(),
