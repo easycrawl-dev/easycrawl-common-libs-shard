@@ -22,6 +22,7 @@ export const taskType = z.object({
   updatedAt: z.date().default(() => new Date()),
   completedAt: z.date().optional().nullable(),
   isPublic: z.boolean().default(false),
+  metadata: z.record(z.string(), z.any()).optional().nullable()
 });
 
 export const taskTypeSnakeCase = z.object(
