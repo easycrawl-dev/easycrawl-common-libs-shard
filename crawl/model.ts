@@ -4,7 +4,6 @@ import {
   toSnakeCaseKeys,
   toCamelCaseKeys
 } from "../transform";
-import { snakeCase } from "change-case";
 
 /**
  * Model representing a crawl operation in the system.
@@ -34,11 +33,28 @@ export const crawlResultType = z.object({
   dispatchResult: z.record(z.string(), z.any()).optional().nullable()
 });
 
-export const crawlResultSnakeCase = z.object(
-  crawlResultType.shape && Object.fromEntries(
-    Object.entries(crawlResultType.shape).map(([key, value]) => [snakeCase(key), value])
-  )
-);
+export const crawlResultSnakeCase = z.object({
+  url: crawlResultType.shape.url,
+  html: crawlResultType.shape.html,
+  success: crawlResultType.shape.success,
+  cleaned_html: crawlResultType.shape.cleanedHtml,
+  fit_html: crawlResultType.shape.fitHtml,
+  media: crawlResultType.shape.media,
+  links: crawlResultType.shape.links,
+  downloaded_files: crawlResultType.shape.downloadedFiles,
+  screenshot: crawlResultType.shape.screenshot,
+  pdf: crawlResultType.shape.pdf,
+  mhtml: crawlResultType.shape.mhtml,
+  markdown: crawlResultType.shape.markdown,
+  extracted_content: crawlResultType.shape.extractedContent,
+  metadata: crawlResultType.shape.metadata,
+  error_message: crawlResultType.shape.errorMessage,
+  session_id: crawlResultType.shape.sessionId,
+  response_headers: crawlResultType.shape.responseHeaders,
+  status_code: crawlResultType.shape.statusCode,
+  ssl_certificate: crawlResultType.shape.sslCertificate,
+  dispatch_result: crawlResultType.shape.dispatchResult
+});
 
 export type CrawlResult = z.infer<typeof crawlResultType>;
 
