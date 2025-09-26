@@ -14,6 +14,7 @@ import { crawlResultType } from "../crawl";
  */
 export const taskType = z.object({
   id: z.string().uuid().optional(),
+  userId: z.string().optional(),
   urls: z.string().array().min(1),
   status: z.enum([TaskStatusEnum.PENDING, TaskStatusEnum.PROCESSING, TaskStatusEnum.COMPLETED, TaskStatusEnum.FAILED]).default(TaskStatusEnum.PENDING),
   results: z.array(crawlResultType).default([]).optional(),
