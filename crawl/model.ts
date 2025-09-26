@@ -21,7 +21,7 @@ export const crawlResultType = z.object({
   links: z.record(z.string(), z.array(z.record(z.string(), z.any()))).optional().nullable(),
   downloadedFiles: z.array(z.string()).optional().nullable(),
   screenshot: z.string().optional().nullable(),
-  pdf: z.instanceof(Buffer).optional().nullable(),
+  pdf: z.string().optional().nullable(), // 改为 string 类型，通常以 base64 编码存储
   mhtml: z.string().optional().nullable(),
   markdown: z.union([z.string(), z.record(z.string(), z.any())]).optional().nullable(),
   extractedContent: z.string().optional().nullable(),
