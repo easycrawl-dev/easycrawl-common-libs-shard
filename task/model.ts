@@ -6,7 +6,7 @@ import {
 } from "../transform";
 import { snakeCase } from "change-case";
 import { TaskStatusEnum } from "./enum";
-import { crawlResultType } from "../crawl";
+import { crawlResultType, crawlResultSnakeCase, CrawlResultSnakeCase, toCrawlResultCamelCase, toCrawlResultSnakeCase } from "../crawl";
 
 /**
  * Model representing the parameters for initiating a crawl task.
@@ -26,21 +26,29 @@ export const taskType = z.object({
 });
 
 export const taskTypeSnakeCase = z.object(
-  taskType.shape && Object.fromEntries(
-    Object.entries(taskType.shape).map(([key, value]) => [snakeCase(key), value])
-  )
+  taskType.shape
+    && Object.fromEntries(Object.entries(taskType.shape).map(([key, value]) => [snakeCase(key), value]))
+    && { results: z.array(crawlResultSnakeCase).optional() }
 );
 
 export type Task = z.infer<typeof taskType>;
 
-export type TaskSnakeCase = ConvertKeysToSnakeCase<Task>;
+export type TaskSnakeCase = ConvertKeysToSnakeCase<Omit<Task, "results">> & {
+  results?: CrawlResultSnakeCase[];
+};
 
 export const toTaskSnakeCase = (task: Task): TaskSnakeCase => {
-  return toSnakeCaseKeys(task);
+  return {
+    ...toSnakeCaseKeys(task),
+    results: task.results ? task.results.map(toCrawlResultSnakeCase) : [],
+  };
 }
 
 export const toTaskCamelCase = (task: TaskSnakeCase): Task => {
-  return toCamelCaseKeys(task);
+  return {
+    ...toCamelCaseKeys(task),
+    results: task.results ? task.results.map(toCrawlResultCamelCase) : [],
+  };
 };
 
 /**
