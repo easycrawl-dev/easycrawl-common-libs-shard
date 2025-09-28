@@ -18,9 +18,35 @@ export const taskType = z.object({
   urls: z.string().array().min(1),
   status: z.enum([TaskStatusEnum.PENDING, TaskStatusEnum.PROCESSING, TaskStatusEnum.COMPLETED, TaskStatusEnum.FAILED]).default(TaskStatusEnum.PENDING),
   results: z.array(crawlResultType).default([]).optional(),
-  createdAt: z.date().default(() => new Date()),
-  updatedAt: z.date().default(() => new Date()),
-  completedAt: z.date().optional().nullable(),
+  // Date、字符串时间（类似 2025-09-28T01:31:24.733Z）或者秒级时间戳
+  createdAt: z.preprocess(
+    (val) => {
+      if (val instanceof Date) return val;
+      if (typeof val === 'string') return new Date(val);
+      if (typeof val === 'number') return new Date(val * 1000); // 秒级时间戳转毫秒
+      return new Date();
+    },
+    z.date()
+  ).default(() => new Date()),
+  updatedAt: z.preprocess(
+    (val) => {
+      if (val instanceof Date) return val;
+      if (typeof val === 'string') return new Date(val);
+      if (typeof val === 'number') return new Date(val * 1000); // 秒级时间戳转毫秒
+      return new Date();
+    },
+    z.date()
+  ).default(() => new Date()),
+  completedAt: z.preprocess(
+    (val) => {
+      if (val === null || val === undefined) return null;
+      if (val instanceof Date) return val;
+      if (typeof val === 'string') return new Date(val);
+      if (typeof val === 'number') return new Date(val * 1000); // 秒级时间戳转毫秒
+      return null;
+    },
+    z.date().nullable()
+  ).optional().nullable(),
   isPublic: z.boolean().default(false),
   metadata: z.record(z.string(), z.any()).optional().nullable()
 });
@@ -65,9 +91,34 @@ export const taskRecordType = z.object({
   userId: z.string(),
   urls: z.string().array(),
   status: z.enum([TaskStatusEnum.PENDING, TaskStatusEnum.PROCESSING, TaskStatusEnum.COMPLETED, TaskStatusEnum.FAILED]).default(TaskStatusEnum.PENDING),
-  createdAt: z.date().default(() => new Date()),
-  updatedAt: z.date().default(() => new Date()),
-  completedAt: z.date().optional().nullable(),
+  createdAt: z.preprocess(
+    (val) => {
+      if (val instanceof Date) return val;
+      if (typeof val === 'string') return new Date(val);
+      if (typeof val === 'number') return new Date(val * 1000); // 秒级时间戳转毫秒
+      return new Date();
+    },
+    z.date()
+  ).default(() => new Date()),
+  updatedAt: z.preprocess(
+    (val) => {
+      if (val instanceof Date) return val;
+      if (typeof val === 'string') return new Date(val);
+      if (typeof val === 'number') return new Date(val * 1000); // 秒级时间戳转毫秒
+      return new Date();
+    },
+    z.date()
+  ).default(() => new Date()),
+  completedAt: z.preprocess(
+    (val) => {
+      if (val === null || val === undefined) return null;
+      if (val instanceof Date) return val;
+      if (typeof val === 'string') return new Date(val);
+      if (typeof val === 'number') return new Date(val * 1000); // 秒级时间戳转毫秒
+      return null;
+    },
+    z.date().nullable()
+  ).optional().nullable(),
   isPublic: z.boolean().default(false)
 });
 
