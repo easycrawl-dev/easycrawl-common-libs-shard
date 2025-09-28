@@ -48,7 +48,8 @@ export const taskType = z.object({
     z.date().nullable()
   ).optional().nullable(),
   isPublic: z.boolean().default(false),
-  metadata: z.record(z.string(), z.any()).optional().nullable()
+  metadata: z.record(z.string(), z.any()).optional().nullable(),
+  log: z.string().optional().nullable(),
 });
 
 export const taskTypeSnakeCase = z.object({
@@ -62,6 +63,7 @@ export const taskTypeSnakeCase = z.object({
   completed_at: taskType.shape.completedAt,
   is_public: taskType.shape.isPublic,
   metadata: taskType.shape.metadata,
+  log: taskType.shape.log,
 });
 
 export type Task = z.infer<typeof taskType>;
