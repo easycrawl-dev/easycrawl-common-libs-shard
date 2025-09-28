@@ -155,13 +155,15 @@ export const taskPreviewType = z.object({
     html: z.string().optional(),
     screenshot: z.string().optional().nullable(),
     mhtml: z.string().optional().nullable(),
-  })).default([]).optional()
+  })).default([]).optional(),
+  log: z.string().optional().nullable(),
 });
 
 export const taskPreviewTypeSnakeCase = z.object({
   id: taskPreviewType.shape.id,
   user_id: taskPreviewType.shape.userId,
   preview_links: taskPreviewType.shape.previewLinks,
+  log: taskPreviewType.shape.log,
 });
 
 export type TaskPreview = z.infer<typeof taskPreviewType>;
