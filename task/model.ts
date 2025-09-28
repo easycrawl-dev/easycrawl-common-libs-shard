@@ -140,3 +140,40 @@ export const toTaskRecordCamelCase = (task: TaskRecordSnakeCase): TaskRecord => 
   return toCamelCaseKeys(task);
 };
 
+/**
+ * Model representing a preview of a task in the system.
+ * Includes basic task details and a selection of preview links with limited data.
+ * This is used to provide a lightweight overview of the task without exposing full results.
+ */
+export const taskPreviewType = z.object({
+  id: taskType.shape.id,
+  userId: taskType.shape.userId,
+  previewLinks: z.array(z.object({
+    url: z.string().url(),
+    html: z.string().optional(),
+    screenshot: z.string().optional().nullable(),
+    mhtml: z.string().optional().nullable(),
+  })).default([]).optional()
+});
+
+export const taskPreviewTypeSnakeCase = z.object({
+  id: taskPreviewType.shape.id,
+  user_id: taskPreviewType.shape.userId,
+  preview_links: taskPreviewType.shape.previewLinks,
+});
+
+export type TaskPreview = z.infer<typeof taskPreviewType>;
+
+export type TaskPreviewSnakeCase = z.infer<typeof taskPreviewTypeSnakeCase>;
+
+export const toTaskPreviewSnakeCase = (task: TaskPreview): TaskPreviewSnakeCase => {
+  return {
+    ...toSnakeCaseKeys(task),
+  };
+}
+
+export const toTaskPreviewCamelCase = (task: TaskPreviewSnakeCase): TaskPreview => {
+  return {
+    ...toCamelCaseKeys(task),
+  };
+}
