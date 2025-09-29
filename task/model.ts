@@ -153,6 +153,8 @@ export const taskPreviewType = z.object({
   previewLinks: z.array(z.object({
     url: z.string().url(),
     html: z.string().optional(),
+    htmlContentHighlightLight: z.string().optional(),
+    htmlContentHighlightDark: z.string().optional(),
     screenshot: z.string().optional().nullable(),
     mhtml: z.string().optional().nullable(),
   })).default([]).optional(),
@@ -162,7 +164,14 @@ export const taskPreviewType = z.object({
 export const taskPreviewTypeSnakeCase = z.object({
   id: taskPreviewType.shape.id,
   user_id: taskPreviewType.shape.userId,
-  preview_links: taskPreviewType.shape.previewLinks,
+  preview_links: z.array(z.object({
+    url: z.string().url(),
+    html: z.string().optional(),
+    html_content_highlight_light: z.string().optional(),
+    html_content_highlight_dark: z.string().optional(),
+    screenshot: z.string().optional().nullable(),
+    mhtml: z.string().optional().nullable(),
+  })).default([]).optional(),
   log: taskPreviewType.shape.log,
 });
 
@@ -173,11 +182,13 @@ export type TaskPreviewSnakeCase = z.infer<typeof taskPreviewTypeSnakeCase>;
 export const toTaskPreviewSnakeCase = (task: TaskPreview): TaskPreviewSnakeCase => {
   return {
     ...toSnakeCaseKeys(task),
+    preview_links: task.previewLinks ? task.previewLinks.map(link => toSnakeCaseKeys(link)) : [],
   };
 }
 
 export const toTaskPreviewCamelCase = (task: TaskPreviewSnakeCase): TaskPreview => {
   return {
     ...toCamelCaseKeys(task),
+    previewLinks: task.preview_links ? task.preview_links.map(link => toCamelCaseKeys(link)) : [],
   };
 }
