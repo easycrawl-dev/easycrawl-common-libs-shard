@@ -1,5 +1,5 @@
 // 导入 cheerio
-import * as cheerio from 'cheerio';
+import { load } from 'cheerio';
 
 /**
  * Check if the given HTML content contains Cloudflare Turnstile captcha.
@@ -11,7 +11,7 @@ const checkIfHtmlContentHasCloudflareTurnstile = (htmlContent: string, threshold
   let score = 0;
   try {
     // 使用 cheerio 加载 HTML
-    const $ = cheerio.load(htmlContent);
+    const $ = load(htmlContent);
     // 1. 检测标题
     const title = $('title').text().trim();
     if (title === "Just a moment...") {
@@ -24,12 +24,12 @@ const checkIfHtmlContentHasCloudflareTurnstile = (htmlContent: string, threshold
       score += 60;
     }
     // 检测以特定前缀开始的ID元素
-    $('[id^="cf-chl-widget-"]').each(function() {
+    $('[id^="cf-chl-widget-"]').each(function(this: any) {
       score += 50;
       return false; // 只计算一次
     });
 
-    $('[id^="turnstile-"]').each(function() {
+    $('[id^="turnstile-"]').each(function(this: any) {
       score += 50;
       return false; // 只计算一次
     });
@@ -42,7 +42,7 @@ const checkIfHtmlContentHasCloudflareTurnstile = (htmlContent: string, threshold
     }
     // 3. 检测 JavaScript 特征
     // 查找包含特定 JavaScript 代码的 script 标签
-    $('script').each(function() {
+    $('script').each(function(this: any) {
       const scriptContent = $(this).html() || '';
       if (scriptContent.includes('turnstile.render')) {
         score += 40;
