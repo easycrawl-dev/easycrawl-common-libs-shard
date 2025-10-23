@@ -53,6 +53,9 @@ const checkIfHtmlContentHasCloudflareTurnstile = (htmlContent: string, threshold
     });
     // 4. 检测文本特征
     const bodyText = $('body').text();
+    if (bodyText.includes("Verifying you are human. This may take a few seconds.")) {
+      score += 30;
+    }
     if (bodyText.includes("Checking if the site connection is secure")) {
       score += 30;
     }
@@ -65,6 +68,10 @@ const checkIfHtmlContentHasCloudflareTurnstile = (htmlContent: string, threshold
     // 5. 检测 iframe 特征
     if ($('iframe[src*="challenge-platform"]').length > 0) {
       score += 40;
+    }
+    // 6. Ray ID 特征
+    if ($('.ray-id').length > 0) {
+      score += 20;
     }
   } catch (error) {
     // 如果解析失败，回退到简单的字符串匹配
