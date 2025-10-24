@@ -73,6 +73,11 @@ const checkIfHtmlContentHasCloudflareTurnstile = (htmlContent: string, threshold
     if ($('.ray-id').length > 0) {
       score += 20;
     }
+    // 7. 各验证码解决器的特征检测
+    // #cf-challenge-container
+    if ($('#cf-challenge-container').length > 0) {
+      score += 100;
+    }
   } catch (error) {
     // 如果解析失败，回退到简单的字符串匹配
     console.error("HTML 解析失败，回退到字符串匹配方法:", error);
@@ -90,7 +95,7 @@ const checkIfHtmlContentHasCloudflareTurnstile = (htmlContent: string, threshold
       score += 40;
     }
   }
-  // 6. 根据得分判断是否包含验证码
+  // 根据得分判断是否包含验证码
   return score >= threshold;
 };
 
